@@ -52,63 +52,76 @@ class ListTest extends FunSuite {
   test("zipWithIndex function (Int)"){
     val expected = List.of((1,0), (2,1), (3,2), (4,3))
     val actual = List.of(1,2,3,4).zipWithIndex
+    assertEquals(expected, actual)
   }
 
   test("zipWithIndex function (String)"){
     val expected = List.of(("a",0), ("b",1), ("c",2))
     val actual = List.of("a","b","c").zipWithIndex
+    assertEquals(expected, actual)
   }
 
   test("update function (Int)"){
     val expected = List.of(10, 2, 3, 4)
     val actual = List.of(1,2,3,4).updated(10,0)
+    assertEquals(expected, actual)
   }
 
   test("update function (String)"){
-    val expected = List.of("a", "b", "c", "d", "e")
-    val actual = List.of("a","b","c","d").updated("e",4)
+    val expected = List.of("a", "b", "c", "e")
+    val actual = List.of("a","b","c","d").updated("e",3)
+    assertEquals(expected, actual)
   }
 
   test("collect function (Int)"){
     val expected = List.of(3, 4)
-    val actual = List.of(1,2,3,4).collect(x => if (x < 2) None else Some(x))
+    val actual = List.of(1,2,3,4).collect(x => if (x <= 2) None else Some(x))
+    assertEquals(expected, actual)
   }
 
   test("collect function (String)"){
     val expected = List.of("opqrst")
-    val actual = List.of("abc","defg","higkl","opqrst").collect(x => if (x.length < 5) None else Some(x))
+    val actual = List.of("abc","defg","higkl","opqrst").collect(x => if (x.length <= 5) None else Some(x))
+    assertEquals(expected, actual)
   }
 
   test("unpack function"){
     val expected = List.of(1,2,3,4,5,6,7,8)
-    val actual = List(List(1,2,3,4), List(5,6,7,8))
+    val list = List(List(1,2,3,4), List(5,6,7,8))
+    val actual = list.unpack(list)
+    assertEquals(expected, actual)
   }
 
   test("listLength function"){
     val expected = 8
-    val actual = List(1,2,3,4,5,6,7,8)
+    val actual = List(1,2,3,4,5,6,7,8).listLength
+    assertEquals(expected, actual)
   }
 
   test("elemOnPos function"){
     val expected = 4
     val actual = List(1,2,3,4).elemOnPos(3)
+    assertEquals(expected, actual)
   }
 
   test("transpose function (2 lists)"){
     val expected = List(List(1,5),List(2,6),List(3,7),List(4,8))
     val lists = List(List(1,2,3,4), List(5,6,7,8))
     val actual = lists.transpose(lists)
+    assertEquals(expected, actual)
   }
 
   test("transpose function (3 lists)"){
     val expected = List(List("a", "d", "g"),List("b","e","h"),List("c","f","i"))
     val lists = List(List("a","b","c"), List("d","e","f"), List("g","h","i"))
     val actual = lists.transpose(lists)
+    assertEquals(expected, actual)
   }
 
   test("transpose function (4 lists)"){
     val expected = List(List(1,5,9,13),List(2,6,10,14),List(3,7,11,15),List(4,8,12,16))
     val lists = List(List(1,2,3,4), List(5,6,7,8), List(9,10,11,12), List(13,14,15,16))
     val actual = lists.transpose(lists)
+    assertEquals(expected, actual)
   }
 }

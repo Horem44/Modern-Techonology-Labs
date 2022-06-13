@@ -139,12 +139,12 @@ enum List[+A] {
         @tailrec
         def rec(ys: List[A], k: Int, res: List[A]): List[A] = {
           if k == xsLength then
-            res
+            res.reverse
           else
             rec(unpacked, k + 1, Cons(ys.elemOnPos(i + k*step), res))
         }
         if i == step - 1 then
-          Cons(rec(unpacked, 0, Nil), acc)
+          Cons(rec(unpacked, 0, Nil), acc).reverse
         else
           go(unpacked, i+1, Cons(rec(unpacked, 0, Nil), acc))
     }
