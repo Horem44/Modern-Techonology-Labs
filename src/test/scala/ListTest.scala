@@ -27,68 +27,74 @@ class ListTest extends FunSuite {
 
   test("foldLeft function (Int)"){
     val expected = 240
-    val actual = List.of(1,2,3,4).foldLeft(10)(_*_)
+    val actual = List(1,2,3,4).foldLeft(10)(_*_)
     assertEquals(expected,actual)
   }
 
   test("foldLeft function (String)"){
     val expected = "eabcd"
-    val actual = List.of("a","b", "c", "d").foldLeft("e")(_+_)
+    val actual = List("a","b", "c", "d").foldLeft("e")(_+_)
+    assertEquals(expected,actual)
+  }
+
+  test("foldRight function") {
+    val expected = 24
+    val actual = List(2,4,8).foldRight(10)(_+_)
     assertEquals(expected,actual)
   }
 
   test("flatMap function (Int)"){
-    val expected = List.of(2, 1, 3, 2, 4, 3, 5, 4)
-    val actual = List.of(1,2,3,4).flatMap(s => List.of(s + 1, s))
+    val expected = List(2, 1, 3, 2, 4, 3, 5, 4)
+    val actual = List(1,2,3,4).flatMap(s => List.of(s + 1, s))
     assertEquals(expected, actual)
   }
 
   test("flatMap function (String"){
-    val expected = List.of("aHello", "aHell", "World", "bHello", "bHell", "World", "cHello", "cHell", "World")
-    val actual = List.of("a","b","c").flatMap(s => List.of(s + "Hello", s + "Hell", "World"))
+    val expected = List("aHello", "aHell", "World", "bHello", "bHell", "World", "cHello", "cHell", "World")
+    val actual = List("a","b","c").flatMap(s => List.of(s + "Hello", s + "Hell", "World"))
     assertEquals(expected, actual)
   }
 
   test("zipWithIndex function (Int)"){
-    val expected = List.of((1,0), (2,1), (3,2), (4,3))
-    val actual = List.of(1,2,3,4).zipWithIndex
+    val expected = List((1,0), (2,1), (3,2), (4,3))
+    val actual = List(1,2,3,4).zipWithIndex
     assertEquals(expected, actual)
   }
 
   test("zipWithIndex function (String)"){
-    val expected = List.of(("a",0), ("b",1), ("c",2))
-    val actual = List.of("a","b","c").zipWithIndex
+    val expected = List(("a",0), ("b",1), ("c",2))
+    val actual = List("a","b","c").zipWithIndex
     assertEquals(expected, actual)
   }
 
   test("update function (Int)"){
-    val expected = List.of(10, 2, 3, 4)
-    val actual = List.of(1,2,3,4).updated(10,0)
+    val expected = List(10, 2, 3, 4)
+    val actual = List(1,2,3,4).updated(10,0)
     assertEquals(expected, actual)
   }
 
   test("update function (String)"){
-    val expected = List.of("a", "b", "c", "e")
-    val actual = List.of("a","b","c","d").updated("e",3)
+    val expected = List("a", "b", "c", "e")
+    val actual = List("a","b","c","d").updated("e",3)
     assertEquals(expected, actual)
   }
 
   test("collect function (Int)"){
-    val expected = List.of(3, 4)
-    val actual = List.of(1,2,3,4).collect(x => if (x <= 2) None else Some(x))
+    val expected = List(3, 4)
+    val actual = List(1,2,3,4).collect(x => if (x <= 2) None else Some(x))
     assertEquals(expected, actual)
   }
 
   test("collect function (String)"){
-    val expected = List.of("opqrst")
-    val actual = List.of("abc","defg","higkl","opqrst").collect(x => if (x.length <= 5) None else Some(x))
+    val expected = List("opqrst")
+    val actual = List("abc","defg","higkl","opqrst").collect(x => if (x.length <= 5) None else Some(x))
     assertEquals(expected, actual)
   }
 
   test("unpack function"){
-    val expected = List.of(1,2,3,4,5,6,7,8)
+    val expected = List(1,2,3,4,5,6,7,8)
     val list = List(List(1,2,3,4), List(5,6,7,8))
-    val actual = list.unpack(list)
+    val actual = flatten(list)
     assertEquals(expected, actual)
   }
 

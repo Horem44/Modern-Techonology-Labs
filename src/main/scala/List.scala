@@ -3,6 +3,11 @@ import scala.annotation.tailrec
 import scala.collection.mutable
 import scala.runtime.Nothing$
 
+
+def flatten[A](xs: List[List[A]]): List[A] = {
+  xs.flatMap(s => s.flatMap(x => List(x)))
+}
+
 enum List[+A] {
   case Nil
   case Cons(hd: A, tl: List[A])
@@ -27,20 +32,6 @@ enum List[+A] {
     go(this, Nil)
   }
 
-  def concatenate[B >: A] (xs: List[B]): List[B] = {
-    var Res: List[B] = this
-    @tailrec
-    def go(xo: List[B]): List[B] ={
-      xo match {
-        case Nil => Res
-        case Cons(xh,xt) =>
-          Res = Cons(xh, Res.reverse).reverse
-          go(xt)
-      }
-    }
-    go(xs)
-  }
-
   def foldLeft[B](x: B)(f: (B, A) => B): B = {
     @tailrec
     def go(xs: List[A], acc: B): B = xs match {
@@ -49,6 +40,14 @@ enum List[+A] {
     }
     go(this, x)
   }
+
+  def foldRight[B](x: B)(f: (A, B) => B): B = {
+    this match
+      case Nil => x
+      case Cons(xh, xt) => f(xh, xt.foldRight(x)(f))
+  }
+
+  def concatenate[B >: A](xs: List[B]): List[B] = this.foldRight(xs)( Cons(_,_) )
 
   def zipWithIndex: List[(A, Int)] = {
     @tailrec
@@ -97,15 +96,6 @@ enum List[+A] {
     go(this, Nil)
   }
 
-  def unpack[A](xs: List[List[A]]): List[A] = {
-    @tailrec
-    def go(xs: List[List[A]], acc: List[A]): List[A] = xs match {
-      case Nil => acc
-      case Cons(hd, tl) => go(tl, acc.concatenate(hd))
-    }
-    go(xs, Nil)
-  }
-
   def listLength: Int = {
     @tailrec
     def go(xs: List[A], acc: Int): Int = xs match {
@@ -128,7 +118,7 @@ enum List[+A] {
   }
 
   def transpose[A](xs: List[List[A]]): List[List[A]] = {
-    val unpacked: List[A] = xs.unpack(xs)
+    val unpacked: List[A] = flatten(xs)
     val xsLength = xs.listLength
     val step: Int = xs match{
       case Nil => 0
